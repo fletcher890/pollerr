@@ -1,0 +1,30 @@
+<input type="search" class="form-control" placeholder="Search..." ng-model="query" /> 
+<br />
+<table class="table table-hover table-bordered">
+    
+    <thead>
+        
+        <tr>
+          <th ng-repeat="field in fields" ng-cick="sort(field)">
+            {{field | labelCase}}
+            <i ng-show="sort.field === field && !sort.order" class="fa fa-angle-down"></i>
+            <i ng-show="sort.field === field && sort.order" class="fa fa-angle-up"></i>
+
+          </th>
+        </tr>
+
+    </thead>
+
+    <tbody>
+        
+        <tr ng-repeat="poll in polls | filter: query | orderBy: sort.field : sort.order" ng-click="show(poll._id.$oid)">
+
+            <td ng-repeat="field in fields">
+              {{ poll[field] }}
+            </td>
+
+        </tr>
+
+    </tbody>
+
+</table>

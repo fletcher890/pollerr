@@ -1,0 +1,32 @@
+!!!
+%html{"ng-app" => "PollerrApp"}
+  %head
+    %title Pollerr
+    %base{href:"/"}
+    %meta{content: "width=device-width, user-scalable=no", name: "viewport"}
+    %link{:href => "lib/bootstrap/dist/css/bootstrap.min.css", :rel => "stylesheet"}
+    %link{:href => "src/css/bootstrap.min.css", :rel => "stylesheet"}
+  %body
+    #wrapper
+      .container
+        #header
+   
+        #content
+          .dashboard-wrapper
+            =get_notifications
+            =yield
+   
+      #footer
+        .container
+
+    %script{:src => "lib/jquery/dist/jquery.min.js"}
+    %script{:src => "lib/bootstrap/dist/js/bootstrap.min.js"}
+    %script{:src => "lib/angular/angular.min.js"}
+    %script{:src => "lib/angular-route/angular-route.min.js"}
+    %script{:src => "lib/angular-resource/angular-resource.min.js"}
+    %script{:src => "lib/angular-messages/angular-messages.min.js"}
+    %script{:src => "src/js/app.js"}
+    %script{:src => "src/js/controllers.js"}
+    %script{:src => "src/js/factories.js"}
+    %script{:src => "src/js/filters.js"}
+    %script{:src => "src/js/directives.js"}
