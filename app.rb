@@ -20,7 +20,7 @@ module CORE
   require "digest/sha1"
   require 'haml'
 
-  class Main < Sinatra::Base
+  class App < Sinatra::Base
 
     configure :development do
  
