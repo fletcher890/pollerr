@@ -1,4 +1,4 @@
-angular.module('PollerrApp')
+angular.module('pollerApp')
   .directive('formField', function($timeout){
     return {
 

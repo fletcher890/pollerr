@@ -1,1 +1,13 @@
-<h2> {{ poll.title }}</h2>
+<h2>{{ poll.title }}</h2>
+
+<form name="editPoll" class="form-horizontal">
+
+	<form-field record="poll" field="title" type="text" live="false" required="true"></form-field>
+
+	<div class="row form-group">
+	    <div class="col-sm-offset-2">
+			<button class="btn btn-primary" ng-click="save()">Create Poll</button>
+	    </div>
+    </div>
+
+</form>

@@ -1,4 +1,4 @@
-angular.module("PollerrApp")
+angular.module("pollerApp")
    .filter('labelCase', function () {
       return function (input) {
           input = input.replace(/([A-Z])/g, ' $1');

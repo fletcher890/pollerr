@@ -1,4 +1,4 @@
-angular.module('PollerrApp')
+angular.module('pollerApp')
   .controller('PollsController', function ($scope, $rootScope, Poll, $location) {
     $rootScope.PAGE = '/polls'
     $scope.polls = Poll.query();
@@ -39,5 +39,21 @@ angular.module('PollerrApp')
 
   .controller('SinglePollController', function($scope, $rootScope, $location, Poll, $routeParams) {
     $rootScope.PAGE = '/polls/:id'
-    $scope.poll = Poll.get({ id: parseInt($routeParams.id, 10) });
+    $scope.poll = Poll.get({ hash: $routeParams.id });
+
+    $scope.edit = function(id) {
+      $location.url('polls/' + id + '/edit');
+    }
+
+    $scope.delete = function () {
+      $scope.poll.$delete();
+      $location.url('/polls');
+    }
+
+  })
+
+  .controller('EditPollController', function($scope, $rootScope, $location, Poll, $routeParams) {
+    $rootScope.PAGE = '/polls/:id/edit'
+    $scope.poll = Poll.get({ hash: $routeParams.id });
+
   });

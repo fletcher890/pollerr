@@ -87,31 +87,39 @@ module CORE
     end
 
     post "/api/polls"  do 
+      
       ng_params = JSON.parse(request.body.read).symbolize_keys
       poll = Poll.where({ title: ng_params[:title][0] }).first
+
       if poll.blank?
 
         poll = Poll.new
-        poll.title = ng_params[:title][0]
+        poll.title = ng_params[:title]
         poll.save
 
         content_type :json
         return poll.to_json
       end
+
     end
 
-    get '/api/polls/:id' do 
-      ng_params = JSON.parse(request.body.read).symbolize_keys
-      poll = Poll.where({ title: 'testing' }).first
-      abort poll.inspect
+    get '/api/polls/:hash' do 
+
+      poll = Poll.find(params[:hash])
+      content_type :json
+      return poll.to_json
+
     end
 
     put '/api/polls/:id' do 
       abort 'update the poll'.inspect
     end
 
-    delete '/api/polls/:id' do 
+    delete '/api/polls' do
+
+      abort JSON.parse(request.body.read).symbolize_keys.inspect 
       abort 'delete the poll'.inspect
+
     end
 
     get '/login' do 
@@ -119,15 +127,22 @@ module CORE
     end
 
     post '/login' do 
+
       user = User.where(username: params[:username], encrypted_password: Digest::SHA1.hexdigest(params[:password])).first
+
       if user.blank?
+
         flash[:error] = 'Invalid log in credentails'
         redirect('/login')
+
       else
+
         flash[:notice] = "Successfully logged in"
         session[:email] = user.email
         redirect('/')
+
       end
+
     end
 
     post '/register' do 

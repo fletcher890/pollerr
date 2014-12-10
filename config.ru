@@ -7,5 +7,5 @@ Mongoid.load!("config/mongoid.yml")
 
  
 map '/' do
-  run CORE::Main
+  run CORE::App
 end

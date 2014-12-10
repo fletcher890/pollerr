@@ -1,4 +1,4 @@
-angular.module('PollerrApp', ['ngRoute', 'ngResource', 'ngMessages'])
+angular.module('pollerApp', ['ngRoute', 'ngResource', 'ngMessages'])
   .config(function($routeProvider, $locationProvider) {
     
     $routeProvider
@@ -12,6 +12,10 @@ angular.module('PollerrApp', ['ngRoute', 'ngResource', 'ngMessages'])
       })
       .when('/polls/:id', {
         controller: 'SinglePollController',
+        templateUrl: 'templates/polls/show.html'
+      })
+      .when('/polls/:id/edit', {
+        controller: 'EditPollController',
         templateUrl: 'templates/polls/edit.html'
       })
 
