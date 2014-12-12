@@ -111,13 +111,15 @@ module CORE
 
     end
 
-    put '/api/polls/:id' do 
+    put '/api/polls' do 
+      ng_params = JSON.parse(request.body.read).symbolize_keys
+      abort Poll.find(ng_params[:_id]).inspect
       abort 'update the poll'.inspect
     end
 
     delete '/api/polls' do
 
-      abort JSON.parse(request.body.read).symbolize_keys.inspect 
+      abort params.inspect 
       abort 'delete the poll'.inspect
 
     end

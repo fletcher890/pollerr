@@ -56,4 +56,8 @@ angular.module('pollerApp')
     $rootScope.PAGE = '/polls/:id/edit'
     $scope.poll = Poll.get({ hash: $routeParams.id });
 
+    $scope.save = function() {
+      $scope.poll.$update();
+      // $location.url('/polls');
+    }
   });
