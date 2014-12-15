@@ -21,7 +21,7 @@ module CORE
   require 'digest/sha1'
   require 'haml'
 
-  class Main < Sinatra::Base
+  class App < Sinatra::Base
 
     configure :development do
  
@@ -96,6 +96,7 @@ module CORE
         content_type :json
         return poll.to_json
       end
+
     end
 
     delete '/api/polls/:id' do 
@@ -111,11 +112,15 @@ module CORE
       if user.nil?
         flash[:error] = 'Invalid log in credentails'
         redirect('/login')
+
       else
+
         flash[:notice] = "Successfully logged in"
         session[:email] = user.email
         redirect('/')
+
       end
+
     end
 
     post '/register' do 
