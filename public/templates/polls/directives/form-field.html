@@ -1,7 +1,7 @@
 <div class="row form-group" ng-form="{{field}}" ng-class="{ 'has-error': {{field}}.$dirty && {{field}}.$invalid }">
   <label class="col-sm-2 control-label"> {{field | labelCase }} <span ng-if="required">*</span></label>
   <div class="col-sm-6" ng-switch="required">
-    <input ng-switch-when="true" ng-model=" record[field][0] " type="{{ record[field][1] }}" class="form-control" required ng-change="update()" ng-blur="blurUpdate()" />
+    <input ng-switch-when="true" ng-model=" record[field] " type="{{ type }}" class="form-control" required ng-change="update()" ng-blur="blurUpdate()" />
   </div>
 
   <div class='col-sm-4 has-error' ng-show='{{field}}.$dirty && {{field}}.$invalid' ng-messages='{{field}}.$error'>

@@ -16,12 +16,16 @@ angular.module('PollerrApp')
       $location.url('polls/' + id);
     };
 
+    $scope.new = function() {
+      $location.url('polls/new')
+    }
+
   })
 
   .controller('NewPollController', function ($scope, $rootScope, Poll, $location) {
     $rootScope.PAGE = '/polls/new';
     $scope.poll = new Poll({
-      title: ['', 'text']
+      title: ''
     });
 
     $scope.save = function() {
@@ -39,5 +43,5 @@ angular.module('PollerrApp')
 
   .controller('SinglePollController', function($scope, $rootScope, $location, Poll, $routeParams) {
     $rootScope.PAGE = '/polls/:id'
-    $scope.poll = Poll.get({ id: parseInt($routeParams.id, 10) });
+    // $scope.poll = Poll.get({ id: $routeParams.id });
   });

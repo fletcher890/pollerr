@@ -1,23 +1,24 @@
 module CORE
 
   class Poll
-    include Mongoid::Document
-    field :title, type: String
+    include DataMapper::Resource
+    property :id,     Serial
+    property :title,  String
   end
 
   class User
-    include Mongoid::Document
+    include DataMapper::Resource
     ## Database authenticatable
-    field :username,           type: String
-    field :admin,              type: String, default: "N"
-    field :email,              type: String, default: ""
-    field :encrypted_password, type: String, default: ""
+    property :id,                 Serial
+    property :username,           String
+    property :admin,              String, :default => "N"
+    property :email,              String, :default => ""
+    property :encrypted_password, String, :default => ""
   end
 
   require 'sinatra'
   require 'rack-flash'
-  require 'mongoid'
-  require "digest/sha1"
+  require 'digest/sha1'
   require 'haml'
 
   class Main < Sinatra::Base
@@ -60,7 +61,7 @@ module CORE
           html += "<div class='alert alert-success'><button type='button' class='close' data-dismiss='alert'>x</button><strong>Success!</strong> #{flash[:notice]}</div>"
         end
 
-        html.html_safe 
+        return (html.respond_to?(:html_safe) && html.html_safe) || html
       end
 
     end
@@ -79,7 +80,7 @@ module CORE
 
     get '/api/polls' do 
       content_type :json
-      Poll.all.entries.to_json
+      Poll.all.to_json
     end
 
     get '/api/polls/new' do 
@@ -87,27 +88,14 @@ module CORE
     end
 
     post "/api/polls"  do 
-      ng_params = JSON.parse(request.body.read).symbolize_keys
-      poll = Poll.where({ title: ng_params[:title][0] }).first
-      if poll.blank?
-
-        poll = Poll.new
-        poll.title = ng_params[:title][0]
-        poll.save
-
+      ng_params = JSON.parse(request.body.read)
+      poll = Poll.first(ng_params)
+      if poll.nil?
+        poll = Poll.create(ng_params)
+        poll.save()
         content_type :json
         return poll.to_json
       end
-    end
-
-    get '/api/polls/:id' do 
-      ng_params = JSON.parse(request.body.read).symbolize_keys
-      poll = Poll.where({ title: 'testing' }).first
-      abort poll.inspect
-    end
-
-    put '/api/polls/:id' do 
-      abort 'update the poll'.inspect
     end
 
     delete '/api/polls/:id' do 
@@ -119,8 +107,8 @@ module CORE
     end
 
     post '/login' do 
-      user = User.where(username: params[:username], encrypted_password: Digest::SHA1.hexdigest(params[:password])).first
-      if user.blank?
+      user = User.first(:username => params[:username], :encrypted_password => Digest::SHA1.hexdigest(params[:password]))
+      if user.nil?
         flash[:error] = 'Invalid log in credentails'
         redirect('/login')
       else
@@ -132,11 +120,11 @@ module CORE
 
     post '/register' do 
 
-      if !User.where(email: params[:user][:email]).first.blank?
+      if !User.first(:email => params[:user][:email]).nil?
         flash[:error] = "Somebody is already registered with this email address"
         redirect('/login');
       else
-        t = User.new(params[:user])
+        t = User.create(params[:user])
         t.encrypted_password = Digest::SHA1.hexdigest(params[:password])
         t.save()
         session[:email] = t.email

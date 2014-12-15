@@ -1,15 +1,29 @@
-<input type="search" class="form-control" placeholder="Search..." ng-model="query" /> 
+
+<div class="row">
+    
+    <div class="col-md-6">
+        <input type="search" class="form-control" placeholder="Search..." ng-model="query" /> 
+    </div>
+    <div class="col-md-6">
+        <button class="btn btn-primary btn-block" ng-click="new()">New Poll</button>
+    </div>
+
+</div>
 <br />
 <table class="table table-hover table-bordered">
     
     <thead>
         
         <tr>
-          <th ng-repeat="field in fields" ng-cick="sort(field)">
+          <th class="col-md-10" ng-repeat="field in fields" ng-cick="sort(field)">
             {{field | labelCase}}
             <i ng-show="sort.field === field && !sort.order" class="fa fa-angle-down"></i>
             <i ng-show="sort.field === field && sort.order" class="fa fa-angle-up"></i>
 
+          </th>
+
+          <th class="col-md-2">
+              Action
           </th>
         </tr>
 
@@ -17,10 +31,18 @@
 
     <tbody>
         
-        <tr ng-repeat="poll in polls | filter: query | orderBy: sort.field : sort.order" ng-click="show(poll._id.$oid)">
+        <tr ng-repeat="poll in polls | filter: query | orderBy: sort.field : sort.order">
 
-            <td ng-repeat="field in fields">
+            <td class="col-md-10" ng-repeat="field in fields">
               {{ poll[field] }}
+            </td>
+
+            <td class="col-md-2">
+                <div class="btn-group pull-right">
+                    
+                <a href="javascript:;" ng-click="show(poll.id)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
+                <a href="javascript:;" ng-click="destroy(poll.id)" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
+                </div>
             </td>
 
         </tr>
