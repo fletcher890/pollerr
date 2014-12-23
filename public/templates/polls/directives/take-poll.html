@@ -1,0 +1,68 @@
+<div ng-switch="temp">
+  
+  <div ng-switch-when="take-poll" class="col-md-offset-2 col-md-8">
+    
+    <h1>{{ poll.title }}</h1>
+    
+    <div class="well">
+
+      <form name="takePoll" novalidate ng-submit="save()">
+        
+        <div class="form-group" ng-repeat="question in questions">
+            <poll-question record="reply.answer_attributes[$index]" reply="reply" index="{{ $index }}" question="question" field="value" live="false" required="true"></poll-question>
+        </div>
+
+        <div class="clearfix"></div>
+    
+        <div class="row form-group">
+          <div class="col-sm-12">
+            <button class="btn btn-default btn-block" ng-disabled="takePoll.$invalid">Complete Survey</button>
+          </div>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+  <div ng-switch-when="password">
+    <div class="col-md-offset-2 col-md-8 text-center" style="margin-top:150px;">
+      <h2>Survey Phrase</h2> 
+      <p>This survey is phrase protected. Please enter the phrase in order to access the survey</p>
+      <form name="accessPoll" novalidate ng-submit="access(password)">
+        <div class="input-group">
+          <input type="password" class="form-control pwd" ng-model="password.value" name="password" value="password">
+          <span class="input-group-btn">
+            <button class="btn btn-empty" type="submit">Go!</button>
+          </span>          
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div ng-switch-when="not-found">
+      
+    <div class="col-md-offset-2 col-md-8 text-center" style="margin-top:150px;">
+      <i class="fa fa-exclamation-circle" style="font-size:200px; color: red; margin-bottom:20px;"></i>
+      <h2>Unfortunately the survey you are looking for has not be found!</h2>
+    </div>
+
+  </div>
+
+  <div ng-switch-when="complete">
+
+    <div class="col-md-offset-2 col-md-8 text-center" style="margin-top:150px;">
+    
+      <i class="fa fa-check-circle" style="font-size:200px; color: green; margin-bottom:20px;"></i>
+      <h2>Thank you for taking the time to complete the poll</h2>
+      <p>{{ settings.complete_message }}</p>
+    </div>
+    
+  </div>
+
+  <div ng-switch-default class="text-center" style="margin-top:150px;">
+      
+      <i class="fa fa-spinner fa-spin" style="font-size:150px !important;"></i>
+  </div>
+
+</div>

@@ -1,4 +1,138 @@
-<h2> {{ poll.title  }} --- {{ poll.id }}</h2>
+<div class="row">
+  <div class="col-md-6">
+    <h2> {{ poll.title  }} </h2>
+  </div>
+  <div class="col-md-6">
+    <div class="btn-group pull-right" style="margin-top:20px;">
+      <button class='btn btn-sm btn-default' ng-click='add_question()'> Add Questions </button>
+      <button ng-click="edit()" class="btn btn-sm btn-primary">Edit</button>
+      <button class='btn btn-sm btn-danger' ng-click='delete()'> Delete Poll </button>
+    </div>
 
-<button ng-click="edit(poll.id)" class="btn btn-primary">Edit</button>
-<button class='btn btn-danger' ng-click='delete()'> Delete Poll </button>
+  </div>
+
+  <div class="col-md-12">
+    <small class="pull-left">Created On: {{ poll.created_at | date: 'dd/MM/yyyy' }}</small>
+  </div>
+</div>
+
+<div class="clearfix"></div>
+
+<hr>
+
+<div class="row">
+  
+  <div class="col-md-12">
+
+     <div role="tabpanel">
+
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs" role="tablist" id="heading-tabs">
+        <li role="presentation" class="text-center" ng-class="{ 'active': activeTab == 'questions' }">
+          <a data-target="#questions" aria-controls="home" role="tab" data-toggle="tab" ng-click="reroute('questions')">
+            <i class="fa fa-question-circle"></i>&nbsp;Questsions
+          </a>
+        </li>
+        <li role="presentation" class="text-center" ng-class="{ 'active': activeTab == 'replies' }">
+          <a data-target="#replies" aria-controls="profile" role="tab" data-toggle="tab" ng-click="reroute('replies')">
+            <i class="fa fa-reply"></i>&nbsp;Replies
+          </a>
+        </li>
+        <li role="presentation" class="text-center" ng-class="{ 'active': activeTab == 'statistics' }">
+          <a data-target="#statistics" aria-controls="messages" role="tab" data-toggle="tab" ng-click="reroute('statistics')">
+            <i class="fa fa-pie-chart"></i>&nbsp;Statistics
+          </a>
+        </li>
+      </ul>
+
+      <!-- Tab panes -->
+      <div class="tab-content">
+        <div role="tabpanel" class="tab-pane" id="questions" ng-class="{ 'active': activeTab == 'questions' }">
+
+        <br />
+            
+            <table class="table table-bordered">
+
+              <thead>
+                  
+                  <tr>
+                    <th class="col-md-5">
+                      Question
+                    </th>
+                    <th class="col-md-5">
+                      Type
+                    </th>
+
+                    <th class="col-md-2">
+                        Action
+                    </th>
+                  </tr>
+
+              </thead>
+
+              <tr ng-repeat="question in poll.question">
+                <td>{{ question.title }}</td>
+                <td>{{ question.kind }}</td>
+                <td>
+                  <div class="btn-group">   
+                    <a href="javascript:;" ng-click="show_question(poll.id, question.id)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
+                    <a href="javascript:;" ng-really-message="Are you sure?" ng-really-click="delete_question($index)" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
+                  </div>
+                </td>
+              </tr>
+              
+            </table>
+
+        </div>
+        <div role="tabpanel" class="tab-pane" id="replies" ng-class="{ 'active': activeTab == 'replies' }">
+
+          <br />
+          <div class="row">
+            
+            <div class="col-md-4">
+              <div class="row">
+                <div ng-repeat="reply in poll.reply" class="col-md-12">
+                  <div class="well well-sm text-center">
+                    <a ng-click="showReply(reply.id)">
+                      <h1>#{{ $index + 1 }}</h1>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-8">
+
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <strong>See the results!</strong>
+                </div>
+                <div class="panel-body" ng-if="activeReply">
+                  <h1>Reply #{{ activeReply.id }}</h1>
+                  <hr>
+                  <div class="question" ng-repeat="answer in activeReply.answer" style="margin-top:15px; margin-bottom:15px;">
+                    <strong>{{ answer.question.title }}</strong><br />
+                    <span>{{ answer.value }}</span>
+                  </div>
+
+                </div>
+              </div> 
+
+            </div>
+
+          </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="statistics" ng-class="{ 'active': activeTab == 'statistics' }">
+
+
+            
+            <div id="polls_per_month" data-graphdata="{{ graphData }}"></div>
+
+        </div>
+      </div>
+
+    </div>
+
+    
+  </div>
+
+</div>

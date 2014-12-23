@@ -1,0 +1,52 @@
+<h1 class="page-header">Settings</h1>
+
+<hr>
+
+<form name="settingsForm" novalidate class="form-horizontal" ng-submit="save()">
+
+  <div class="row">
+      
+    <div class="col-md-6">
+      <form-field record="user_record.setting" field="company_name" live="false" required="true" type="text"></form-field>
+    </div>
+
+    <div class="col-md-6">
+      <form-field record="user_record" field="username" live="false" required="true" type="text"></form-field>
+    </div>
+
+    <div class="col-md-6">
+      <form-field record="user_record" field="email" live="false" required="true" type="email"></form-field>
+    </div>
+
+     <div class="col-md-6">
+      <form-field record="user_record" field="password" live="false" type="password" placeholder="password"></form-field>
+    </div>
+
+  </div>
+
+  <hr>
+
+  <div class="row">
+    <div class="col-md-12">
+      <form-field record="user_record.setting" field="complete_message" live="false" required="true" type="textarea"></form-field>
+    </div>
+    <div class="col-md-12">
+      <label class="control-label"> All fields required by default? <span ng-if="required">*</span></label><br />
+      <label class="checkbox-inline">
+        <input type="radio" ng-model="user_record.setting.required_by_default" value="Y" ng-checked="true" /> Yes
+      </label>
+      <label class="checkbox-inline">
+        <input type="radio" ng-model="user_record.setting.required_by_default" value="N" /> No
+      </label>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="clearfix"></div>
+
+  <div class="col-md-12 form-group">
+    <button class="btn btn-primary" type="submit" ng-click="save()">Save</button>
+  </div>
+
+</form>

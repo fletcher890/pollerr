@@ -8,7 +8,9 @@ gem 'haml'
 gem 'shotgun'
 gem 'cucumber'
 gem 'capybara'
+gem "iconv"
 
 gem 'data_mapper'
+gem 'dm-accepts_nested_attributes', '~> 1.0.0'
 gem 'dm-postgres-adapter'
 gem 'pg'

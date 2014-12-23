@@ -1,13 +1,45 @@
-<h2>{{ poll.title }}</h2>
+<h2>{{ poll.title }} <i class="pull-right">{{ poll.status }}</i></h2>
 
 <form name="editPoll" class="form-horizontal">
 
-	<form-field record="poll" field="title" type="text" live="false" required="true"></form-field>
+  <form-field record="poll" field="title" type="text" live="false" required="true"></form-field>
 
-	<div class="row form-group">
-	    <div class="col-sm-offset-2">
-			<button class="btn btn-primary" ng-click="save()">Update Poll</button>
-	    </div>
+  <div class="row">
+    
+    <div class="col-md-12">
+      <label class="control-label"> Phrase Protected? </label>
     </div>
+    
+    <label class="checkbox-inline">
+      <input type="radio" ng-model="poll.password_protected" value="Y" /> Yes
+    </label>
+    <label class="checkbox-inline">
+      <input type="radio" ng-model="poll.password_protected" value="N" ng-checked="true" /> No
+    </label>
+
+    <div class="col-md-12" ng-show="checkPasswordProtected()">
+      
+      <form-field record="poll" field="password" live="false" required="true" type="text"></form-field>
+
+    </div>
+
+  </div>
+
+  <div class="row">
+    
+    <label class="checkbox-inline">
+      <input type="radio" ng-model="poll.status" value="live" /> Live
+    </label>
+    <label class="checkbox-inline">
+      <input type="radio" ng-model="poll.status" value="draft" /> Draft
+    </label>
+
+  </div>
+
+  <div class="clearfix"></div>
+
+	<div class="col-md-12 form-group">
+		<button class="btn btn-primary" ng-click="save()">Update Poll</button>
+  </div>
 
 </form>

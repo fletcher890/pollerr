@@ -1,19 +1,128 @@
 module CORE
 
   class Poll
+
     include DataMapper::Resource
-    property :id,     Serial
-    property :title,  String
+    belongs_to :user
+    has n,     :reply
+    has n,     :question
+
+    property :id,                 Serial
+    property :user_id,            Integer
+    property :title,              String
+    property :status,             String, :default => "draft"
+    property :password_protected, String, :default => "N"
+    property :password,           String
+    property :created_at,         DateTime
+    property :created_on,         Date
+    property :updated_at,         DateTime
+    property :updated_on,         Date
+
   end
 
   class User
+
     include DataMapper::Resource
+    has n,     :poll
+    has 1,     :setting
+
     ## Database authenticatable
     property :id,                 Serial
     property :username,           String
     property :admin,              String, :default => "N"
     property :email,              String, :default => ""
     property :encrypted_password, String, :default => ""
+    property :created_at,         DateTime
+    property :created_on,         Date
+    property :updated_at,         DateTime
+    property :updated_on,         Date
+
+    accepts_nested_attributes_for :setting
+
+  end
+
+  class Question
+
+    include DataMapper::Resource
+    belongs_to :poll
+    has n,     :possible_answer
+
+    property :id,                 Serial
+    property :title,              String
+    property :kind,               String, :default => "open"
+    property :required,           String, :default => "Y"
+    property :poll_id,            Integer
+    property :created_at,         DateTime
+    property :created_on,         Date
+    property :updated_at,         DateTime
+    property :updated_on,         Date
+
+    accepts_nested_attributes_for :possible_answer
+
+  end
+
+  class PossibleAnswer 
+
+    include DataMapper::Resource
+    belongs_to :question
+
+    property :id,                 Serial
+    property :title,              String
+    property :question_id,        Integer
+    property :created_at,         DateTime
+    property :created_on,         Date
+    property :updated_at,         DateTime
+    property :updated_on,         Date
+
+  end
+
+  class Reply
+
+    include DataMapper::Resource
+    belongs_to :poll
+    has n,     :answer
+
+    property :id,                 Serial
+    property :poll_id,            Integer
+    property :created_at,         DateTime
+    property :created_on,         Date
+    property :updated_at,         DateTime
+    property :updated_on,         Date
+
+    accepts_nested_attributes_for :answer
+
+  end
+
+  class Answer
+
+    include DataMapper::Resource
+
+    belongs_to :reply
+    belongs_to :question
+
+    property :id,                 Serial
+    property :reply_id,           Integer
+    property :question_id,        Integer
+    property :value,              String
+    property :created_at,         DateTime
+    property :created_on,         Date
+    property :updated_at,         DateTime
+    property :updated_on,         Date
+
+  end
+
+  class Setting
+
+    include DataMapper::Resource
+
+    belongs_to :user
+
+    property :id,                   Serial
+    property :user_id,              Integer
+    property :logo,                 String
+    property :complete_message,     Text
+    property :company_name,         String
+    property :required_by_default,  String, :default => "Y"
   end
 
   require 'sinatra'
@@ -69,7 +178,7 @@ module CORE
     helpers UserSession
  
     before do
-      if !logged_in? && request.path_info != '/login' && request.path_info != '/register'
+      if !logged_in? && request.path_info != '/login' && request.path_info != '/register' && !request.path_info.include?('/take-survey') && !request.path_info.include?('/api')
         redirect('/login') and return 
       end
     end
@@ -78,13 +187,11 @@ module CORE
       haml :index
     end
 
+    # Start of polls REST
+
     get '/api/polls' do 
       content_type :json
-      Poll.all.to_json
-    end
-
-    get '/api/polls/new' do 
-      abort 'new poll'.inspect
+      Poll.all(:user_id => session[:user_id]).to_json
     end
 
     post "/api/polls"  do 
@@ -92,6 +199,7 @@ module CORE
       poll = Poll.first(ng_params)
       if poll.nil?
         poll = Poll.create(ng_params)
+        poll[:user_id] = session[:user_id].to_i
         poll.save()
         content_type :json
         return poll.to_json
@@ -99,8 +207,121 @@ module CORE
 
     end
 
+    put '/api/polls/:id' do 
+      poll = Poll.get(params[:id].to_i)
+      poll.attributes = JSON.parse(request.body.read)
+      poll.save()
+      content_type :json
+      return poll.to_json
+    end
+
+    get "/api/polls/:id" do 
+      poll = Poll.get(params[:id].to_i)
+      content_type :json
+      return poll.to_json(relationships: { reply: { methods: [ :desc ] }, question: { methods: [ :desc ] } })
+    end
+
+    get "/api/live-polls/:id" do 
+      poll = Poll.first(:id => params[:id].to_i, :status => 'live')
+      content_type :json
+      return poll.to_json
+    end
+
     delete '/api/polls/:id' do 
-      abort 'delete the poll'.inspect
+      Poll.get(params[:id].to_i).destroy
+      return {}.to_json
+    end
+
+    get '/api/poll-json/:id' do 
+      poll = Poll.get(params[:id].to_i)
+      return PollSerializer.count_per_month(poll).to_json
+    end
+
+    # End of polls
+
+    # Start of Questions REST
+
+    get "/api/questions" do 
+      content_type :json
+      return Question.all.to_json
+    end
+
+    post "/api/questions" do 
+      ng_params = JSON.parse(request.body.read)
+      question = Question.create(ng_params)
+      question.save()
+      content_type :json
+      return question.to_json
+    end
+
+    get "/api/questions/:id" do 
+      question = Question.get(params[:id].to_i)
+      content_type :json
+      return question.to_json(relationships: { possible_answer: { methods: [ :title ] } })
+    end
+
+    get "/api/questions_by_poll/:id" do 
+      content_type :json
+      return Question.all(:poll_id => params[:id].to_i).to_json(relationships: { possible_answer: { methods: [ :title ] } })
+    end
+
+    put '/api/questions/:id' do 
+      question = Question.get(params[:id].to_i)
+      PossibleAnswer.all(:question_id => params[:id].to_i).destroy
+      question.attributes = JSON.parse(request.body.read)
+      question.save()
+      content_type :json
+      return question.to_json
+    end
+
+    delete "/api/questions/:id" do 
+      Question.get(params[:id].to_i).destroy
+      return {}.to_json
+    end
+
+    # End of questions REST
+
+    post "/api/reply" do 
+      ng_params = JSON.parse(request.body.read)
+      reply = Reply.create(ng_params)
+      reply.save()
+      content_type :json
+      return reply.to_json
+    end
+
+    get "/api/reply/:id" do 
+      reply = Reply.get(params[:id].to_i)
+      content_type :json
+      return reply.to_json(relationships: { answer: { methods: [ :id ], relationships: { question: { methods: [:id] } } } })
+    end
+
+    get "/api/user" do 
+      user = User.first(:id => session[:user_id].to_i)
+      content_type :json
+      return user.to_json(relationships: { setting: { methods: [:id] } } )
+    end
+
+    put "/api/user/:id" do 
+      user = User.get(params[:id].to_i)
+     
+      ng_params = JSON.parse(request.body.read)
+      if ng_params.has_key?('password')
+        ng_params['encrypted_password'] = Digest::SHA1.hexdigest(ng_params['password'])
+        ng_params.delete('password')
+      end
+
+      Setting.all(:user_id => session[:user_id].to_i).destroy
+      user.attributes = ng_params
+      user.save()
+
+      content_type :json
+      return user.to_json
+    end
+
+    get '/api/settings-by-user/:id' do 
+      setting = Setting.first(:user_id => params[:id].to_i)
+      content_type :json
+      return setting.to_json
     end
 
     get '/login' do 
@@ -112,13 +333,11 @@ module CORE
       if user.nil?
         flash[:error] = 'Invalid log in credentails'
         redirect('/login')
-
       else
-
         flash[:notice] = "Successfully logged in"
         session[:email] = user.email
+        session[:user_id] = user.id
         redirect('/')
-
       end
 
     end
@@ -132,7 +351,11 @@ module CORE
         t = User.create(params[:user])
         t.encrypted_password = Digest::SHA1.hexdigest(params[:password])
         t.save()
+
+        settings = Setting.create(:user_id => t.id).save()
+
         session[:email] = t.email
+        session[:user_id] = t.id
         flash[:notice] = "You have been successfully registered and logged in"
         redirect('/')
       end

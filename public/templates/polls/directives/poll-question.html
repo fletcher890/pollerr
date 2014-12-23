@@ -1,0 +1,28 @@
+<div class="row form-group" ng-form="{{field}}" ng-class="{ 'has-error': {{field}}.$dirty && {{field}}.$invalid }" >
+  <div class="col-md-12">
+
+    <div ng-switch="question.kind">
+        <label>{{ question.title }} <span ng-if="required">*</span></label>
+        <div class="input-group col-md-12" ng-switch-when="open">
+          <input ng-model="reply.answer_attributes[index]['value']" type="text" class="form-control" required ng-change="update()" ng-blur="blurUpdate()" />
+        </div>
+        <div class="input-group" ng-switch-when="multiple">
+
+          <div class="radio">
+            <label ng-repeat="item in question.possible_answer" style="display:block;">
+              <input type="radio" name="group{{index}}" ng-model="reply.answer_attributes[index]['value']" value="{{ item.title }}" ng-required="true"> {{ item.title }}
+            </label>
+          </div>
+
+        </div>
+
+    </div>  
+  
+  </div>
+
+  <div class='col-sm-12 has-error' ng-show='{{field}}.$dirty && {{field}}.$invalid' ng-messages='{{field}}.$error'>
+    <p class="control-label" ng-message="required">Field is required</p>
+    <p class="control-label" ng-repeat="(k, v) in types" ng-message="{{field | labelCase }} {{v[1]}} "></p>
+  </div>
+
+</div>
