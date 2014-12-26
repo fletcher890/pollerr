@@ -43,7 +43,7 @@ Graph.prototype.render = function() {
     var options = {'title': this.data.title,
                    'width':400,
                    'height':300,
-                   'colors': ['#A2C180','#3D7930','#FFC6A5','#FFFF42','#DEF3BD','#00A5C6','#DEBDDE','#000000'] };
+                   'colors': ['#85B5BB','#3D7930','#FFC6A5','#FFFF42','#DEF3BD','#00A5C6','#DEBDDE','#000000'] };
 
     // Instantiate and draw our chart, passing in some options.
     var chart = new google.visualization[this.getKind()]($(this.selector)[0]);

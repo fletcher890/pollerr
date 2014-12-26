@@ -2,14 +2,16 @@
   
   <div ng-switch-when="take-poll" class="col-md-offset-2 col-md-8">
     
-    <h1>{{ poll.title }}</h1>
+    <h1>{{ poll.title }} <small>by {{ settings.company_name }}</small></h1>
     
     <div class="well">
 
       <form name="takePoll" novalidate ng-submit="save()">
         
-        <div class="form-group" ng-repeat="question in questions">
-            <poll-question record="reply.answer_attributes[$index]" reply="reply" index="{{ $index }}" question="question" field="value" live="false" required="true"></poll-question>
+        <div class="form-group" ng-repeat="question in questions" ng-switch="question.required">
+
+            <poll-question ng-switch-when="Y" record="reply.answer_attributes[$index]" reply="reply" index="{{ $index }}" question="question" field="value" live="false" required="true"></poll-question>
+            <poll-question ng-switch-when="N" record="reply.answer_attributes[$index]" reply="reply" index="{{ $index }}" question="question" field="value" live="false"></poll-question>
         </div>
 
         <div class="clearfix"></div>

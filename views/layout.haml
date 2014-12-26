@@ -6,21 +6,35 @@
     %meta{content: "width=device-width, user-scalable=no", name: "viewport"}
     %link{:href => "//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css", :rel => "stylesheet"}
     %link{:href => "lib/bootstrap/dist/css/bootstrap.min.css", :rel => "stylesheet"}
-    %link{:href => "src/css/bootstrap.min.css", :rel => "stylesheet"}
+    %link{:href => "src/css/pollerr.css", :rel => "stylesheet"}
   %body
     #wrapper
-      .container
-        #header
-   
-        #content
-          .dashboard-wrapper
-            =get_notifications
-            -partial(:'partials/_flash')
-            =yield
-   
-      #footer
-        .container
+      #sidebar-wrapper
+        %ul#sidebar.sidebar-nav{"ng-controller" => "NavigationController"}
+          %li.sidebar-brand
+            %a.text-center{"data-placement" => "right", "data-toggle" => "tooltip", :href => "./", :title => "Dashboard", "ng-click" => "click('dashboard')", "ng-class" => "{ active: PAGE == 'dashboard' }"}
+              %i.fa.fa-dashboard
+          %li.sidebar-brand
+            %a.text-center{"data-placement" => "right", "data-toggle" => "tooltip", :href => "javascript:;", :title => "Polls", "ng-click" => "click('polls')", "ng-class" => "{ active: PAGE == 'polls' }"}
+              %i.fa.fa-bar-chart
+          / %li.sidebar-brand
+          /   %a.text-center{"data-placement" => "right", "data-toggle" => "tooltip", :href => "javascript:;", :title => "Statistics", "ng-click" => "click('statistics')", "ng-class" => "{ active: PAGE == 'statistics' }"}
+          /     %i.fa.fa-line-chart
+          %li.sidebar-brand
+            %a.text-center{"data-placement" => "right", "data-toggle" => "tooltip", :href => "javascript:;", :title => "Settings", "ng-click" => "click('settings')", "ng-class" => "{ active: PAGE == 'settings' }"}
+              %i.fa.fa-cog
+        %ul.sidebar-nav.bottom
+          %li.sidebar-brand
+            %a.text-center{"data-placement" => "right", "data-toggle" => "tooltip", :href => "javascript:;", :title => "Logout", "ng-click" => "click('logout')"}
+              %i.fa.fa-sign-out
 
+      #page-content-wrapper.container
+        .page-content.inset
+          .row
+            .col-md-offset-1.col-md-10
+              =get_notifications
+              -partial(:'partials/_flash')
+              =yield
     %script{:src => "http://www.google.com/jsapi"}
     %script{:src => "lib/jquery/dist/jquery.min.js"}
     %script{:src => "lib/bootstrap/dist/js/bootstrap.min.js"}
@@ -29,7 +43,6 @@
     %script{:src => "lib/angular-resource/angular-resource.min.js"}
     %script{:src => "lib/angular-messages/angular-messages.min.js"}
     %script{:src => "lib/angular-flash/dist/angular-flash.min.js"}
-    %script{:src => "lib/angular-summernote/dist/angular-summernote.min.js"}
     %script{:src => "lib/angular-ui-utils/ui-utils.min.js"}
     %script{:src => "lib/angular-bootstrap/ui-bootstrap.min.js"}
     %script{:src => "src/js/app.js"}

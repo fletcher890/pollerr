@@ -4,7 +4,8 @@
     <div ng-switch="question.kind">
         <label>{{ question.title }} <span ng-if="required">*</span></label>
         <div class="input-group col-md-12" ng-switch-when="open">
-          <input ng-model="reply.answer_attributes[index]['value']" type="text" class="form-control" required ng-change="update()" ng-blur="blurUpdate()" />
+            <input ng-if="required" ng-model="reply.answer_attributes[index]['value']" type="text" class="form-control" required ng-change="update()" ng-blur="blurUpdate()" />
+            <input ng-if="!required" ng-model="reply.answer_attributes[index]['value']" type="text" class="form-control" ng-change="update()" ng-blur="blurUpdate()" />
         </div>
         <div class="input-group" ng-switch-when="multiple">
 

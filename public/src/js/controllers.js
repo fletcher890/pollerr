@@ -1,6 +1,20 @@
 angular.module('PollerrApp')
+  .controller('DashboardController', function($scope, $rootScope, Poll, $location, $route) {
+    $scope.date = new Date();
+    $rootScope.PAGE = 'dashboard'
+
+    $scope.click = function(where) {
+      $location.url(where);
+    }
+
+  })
+  .controller('NavigationController', function($scope, $rootScope, $location) {
+    $scope.click = function(where) {
+      $location.url(where);
+    }
+  })
   .controller('PollsController', function ($scope, $rootScope, Poll, $location, $route) {
-    $rootScope.PAGE = '/polls'
+    $rootScope.PAGE = 'polls'
     $scope.polls = Poll.query();
     $scope.fields = ['title']
 
@@ -32,7 +46,7 @@ angular.module('PollerrApp')
   })
 
   .controller('NewPollController', function ($scope, $rootScope, Poll, $location) {
-    $rootScope.PAGE = '/polls/new';
+    $rootScope.PAGE = 'polls';
     $scope.poll = new Poll({
       title: ''
     });
@@ -55,7 +69,7 @@ angular.module('PollerrApp')
   })
 
   .controller('SinglePollController', function ($scope, $rootScope, $location, Poll, Question, Reply, $routeParams, $route) {
-    $rootScope.PAGE = '/polls/:id';
+    $rootScope.PAGE = 'polls';
     $scope.activeTab = $routeParams.tab || 'questions'
     $scope.poll = Poll.get({ id: $routeParams.id });
     $scope.graphData = Poll.get_json({ id: $routeParams.id }, function(data) {
@@ -105,7 +119,7 @@ angular.module('PollerrApp')
   })
 
   .controller('EditPollController', function ($scope, $rootScope, $location, Poll, $routeParams, flash) {
-    $rootScope.PAGE = '/polls/:id/edit'
+    $rootScope.PAGE = 'polls'
     $scope.poll = Poll.get({ id: $routeParams.id });
 
     $scope.save = function() {
@@ -121,7 +135,7 @@ angular.module('PollerrApp')
   })
 
   .controller('NewQuestionController', function ($scope, $rootScope, $location, Poll, Question, Setting, $routeParams, flash) {
-    $rootScope.PAGE = '/polls/:id/questions/new';
+    $rootScope.PAGE = 'polls';
     Poll.get({ id: $routeParams.id }, function(data){
       $scope.poll = data
       $scope.settings = Setting.get_by_user({ id: data.user_id });
@@ -163,7 +177,7 @@ angular.module('PollerrApp')
   })
 
   .controller('EditQuestionController', function ($scope, $rootScope, $location, Poll, Question, $routeParams, flash) {
-    $rootScope.PAGE = '/polls/:id/questions/:qid/edit';
+    $rootScope.PAGE = 'polls';
     $scope.poll = Poll.get({ id: $routeParams.id });
     $scope.question = Question.get({ id: $routeParams.qid });
 
@@ -227,7 +241,7 @@ angular.module('PollerrApp')
   })
 
   .controller('SettingsController', function($scope, $rootScope, $location, Setting, User, $routeParams, flash) {
-    $rootScope.PAGE = '/settings';
+    $rootScope.PAGE = 'settings';
     $scope.user_record = User.query();
 
     $scope.save = function() {

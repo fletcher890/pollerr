@@ -1,4 +1,4 @@
-module CORE
+module Pollerr
 
   class Poll
 
@@ -135,9 +135,13 @@ module CORE
     configure :development do
  
       enable :sessions, :logging, :dump_errors, :inline_templates
-      enable :methodoverride
+      disable :method_override
+      disable :static
+
       set :root, File.dirname(__FILE__)
       logger = Logger.new($stdout)
+
+      use Rack::Deflater
 
 
     end

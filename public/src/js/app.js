@@ -1,8 +1,9 @@
-angular.module('PollerrApp', ['ngRoute', 'ngResource', 'ngMessages', 'angular-flash.service', 'angular-flash.flash-alert-directive', 'ui.utils', 'ui.bootstrap', 'summernote'])
+angular.module('PollerrApp', ['ngRoute', 'ngResource', 'ngMessages', 'angular-flash.service', 'angular-flash.flash-alert-directive', 'ui.utils', 'ui.bootstrap'])
   .config(function($routeProvider, $locationProvider, $httpProvider, flashProvider) {
     
     $routeProvider
       .when('/', {
+        controller: 'DashboardController',
         templateUrl: 'templates/dashboard/index.html'
       })
       .when('/polls', {

@@ -1,3 +1,23 @@
+<div class="row block-of-three">
+    
+  <div class="col-md-12">
+
+    <ol class="breadcrumb">
+        <li><a href="#">Home</a></li>
+        <li>Polls</li>
+    </ol>
+      
+    <div class="well text-center">
+      
+      <i class="fa fa-bar-chart"></i>
+      &nbsp;
+      Polls
+
+   </div>
+
+  </div>
+
+</div>
 
 <div class="row">
     
@@ -9,44 +29,22 @@
     </div>
 
 </div>
+
 <br />
-<table class="table table-hover table-bordered">
+
+<div class="sav">
     
-    <thead>
-        
-        <tr>
-          <th class="col-md-10" ng-repeat="field in fields" ng-cick="sort(field)">
-            {{field | labelCase}}
-            <i ng-show="sort.field === field && !sort.order" class="fa fa-angle-down"></i>
-            <i ng-show="sort.field === field && sort.order" class="fa fa-angle-up"></i>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-4" ng-repeat="poll in polls | filter: query | orderBy: sort.field : sort.order">
+              <div class="well"> 
+                 <div class="box-wrapper text-center">
+                    <span class="poll-title">{{ poll.title }}</span>
+                  </div>
+                  <a href="javascript:;" ng-click="show(poll.id)" class="btn btn-primary btn-block">View Poll &nbsp; <i class="fa fa-angle-right"></i></a>
+              </div>
+            </div>
+        </div>
+    </div>
 
-          </th>
-
-          <th class="col-md-2">
-              Action
-          </th>
-        </tr>
-
-    </thead>
-
-    <tbody>
-        
-        <tr ng-repeat="poll in polls | filter: query | orderBy: sort.field : sort.order">
-
-            <td class="col-md-10" ng-repeat="field in fields">
-              {{ poll[field] }}
-            </td>
-
-            <td class="col-md-2">
-                <div class="btn-group pull-right">
-                    
-                <a href="javascript:;" ng-click="show(poll.id)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
-                <a href="javascript:;" ng-click="delete($index)" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
-                </div>
-            </td>
-
-        </tr>
-
-    </tbody>
-
-</table>
+</div>
