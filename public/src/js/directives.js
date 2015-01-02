@@ -10,7 +10,8 @@ angular.module('PollerrApp')
         field: '@',
         live: '@',
         required: '@',
-        type: '@'
+        type: '@',
+        disabled: '='
       },
       link: function($scope, element, attr) {
 

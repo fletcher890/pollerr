@@ -10,8 +10,24 @@ angular.module('PollerrApp')
   })
   .controller('NavigationController', function($scope, $rootScope, $location) {
     $scope.click = function(where) {
+      if(where == 'dashboard'){
+        where = '';
+      }
       $location.url(where);
     }
+  })
+  .controller('AuthController', function($scope, $rootScope, $location, $routeParams) {
+    var init = function() {
+      console.log($routeParams);
+      if( $routeParams.logout ) {
+        $location.url('login');
+      }
+      if( $routeParams.login ) {
+        console.log('login')
+      }
+    }
+    console.log('12312312')
+    init();
   })
   .controller('PollsController', function ($scope, $rootScope, Poll, $location, $route) {
     $rootScope.PAGE = 'polls'

@@ -41,7 +41,7 @@ Graph.prototype.getKind = function(){
 Graph.prototype.render = function() {
     // Set chart options
     var options = {'title': this.data.title,
-                   'width':400,
+                   'width':800,
                    'height':300,
                    'colors': ['#85B5BB','#3D7930','#FFC6A5','#FFFF42','#DEF3BD','#00A5C6','#DEBDDE','#000000'] };
 

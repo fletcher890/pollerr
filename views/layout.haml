@@ -6,6 +6,7 @@
     %meta{content: "width=device-width, user-scalable=no", name: "viewport"}
     %link{:href => "//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css", :rel => "stylesheet"}
     %link{:href => "lib/bootstrap/dist/css/bootstrap.min.css", :rel => "stylesheet"}
+    %link{:href => "src/css/areo.css", :rel => "stylesheet"}
     %link{:href => "src/css/pollerr.css", :rel => "stylesheet"}
   %body
     #wrapper
@@ -23,7 +24,7 @@
           %li.sidebar-brand
             %a.text-center{"data-placement" => "right", "data-toggle" => "tooltip", :href => "javascript:;", :title => "Settings", "ng-click" => "click('settings')", "ng-class" => "{ active: PAGE == 'settings' }"}
               %i.fa.fa-cog
-        %ul.sidebar-nav.bottom
+        %ul.sidebar-nav.bottom{"ng-controller" => "NavigationController"}
           %li.sidebar-brand
             %a.text-center{"data-placement" => "right", "data-toggle" => "tooltip", :href => "javascript:;", :title => "Logout", "ng-click" => "click('logout')"}
               %i.fa.fa-sign-out

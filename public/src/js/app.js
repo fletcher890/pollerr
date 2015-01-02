@@ -6,6 +6,15 @@ angular.module('PollerrApp', ['ngRoute', 'ngResource', 'ngMessages', 'angular-fl
         controller: 'DashboardController',
         templateUrl: 'templates/dashboard/index.html'
       })
+      .when('/logout', {
+        controller: 'AuthController'
+      })
+      .when('/login', {
+        controller: 'AuthController'
+      })
+      .when('/register', {
+        controller: 'AuthController'
+      })
       .when('/polls', {
         controller: 'PollsController',
         templateUrl: 'templates/polls/index.html'

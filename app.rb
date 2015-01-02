@@ -328,11 +328,11 @@ module Pollerr
       return setting.to_json
     end
 
-    get '/login' do 
+    get '/api/login' do 
       haml :login, :layout => :authentication
     end
 
-    post '/login' do 
+    post '/api/login' do 
       user = User.first(:username => params[:username], :encrypted_password => Digest::SHA1.hexdigest(params[:password]))
       if user.nil?
         flash[:error] = 'Invalid log in credentails'
@@ -346,7 +346,7 @@ module Pollerr
 
     end
 
-    post '/register' do 
+    post '/api/register' do 
 
       if !User.first(:email => params[:user][:email]).nil?
         flash[:error] = "Somebody is already registered with this email address"
@@ -366,7 +366,7 @@ module Pollerr
 
     end
 
-    get '/logout' do 
+    get '/api/logout' do 
       session[:email] = nil
       flash[:notice] = "Successfully logged out. Don't be a stranger, come back again soon!"
       redirect('/login')

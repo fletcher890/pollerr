@@ -11,8 +11,8 @@
       <div ng-switch-default>
         
         <div class="" ng-switch="required">
-          <input ng-switch-when="true" ng-model=" record[field] " type="{{ type }}" class="form-control" required ng-change="update()" ng-blur="blurUpdate()" placeholder="{{ placeholder }}" />
-          <input ng-switch-default ng-model=" record[field] " type="{{ type }}" class="form-control" ng-change="update()" ng-blur="blurUpdate()" placeholder="{{ placeholder }}" />
+          <input ng-switch-when="true" ng-model=" record[field] " type="{{ type }}" class="form-control" required ng-change="update()" ng-blur="blurUpdate()" ng-disabled="disabled == true" placeholder="{{ placeholder }}" />
+          <input ng-switch-default ng-model=" record[field] " type="{{ type }}" class="form-control" ng-disabled="disabled == true" ng-change="update()" ng-blur="blurUpdate()" placeholder="{{ placeholder }}" />
         </div>
 
       </div>

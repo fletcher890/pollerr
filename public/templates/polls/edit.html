@@ -1,25 +1,71 @@
-<h2>{{ poll.title }} <i class="pull-right">{{ poll.status }}</i></h2>
+<div class="row block-of-three">
+    
+  <div class="col-md-12">
 
-<form name="editPoll" class="form-horizontal">
+    <ol class="breadcrumb" ng-controller="NavigationController">
+        <li><a href="javascript:;" ng-click="click('dashboard')">Home</a></li>
+        <li><a href="javascript:;" ng-click="click('polls')">Polls</a></li>
+        <li><a href="javascript:;" ng-click="click('polls/' + poll.id)">Poll {{ poll.id }}</a></li>
+        <li>Edit Poll</li>
+    </ol>
+      
+    <div class="well text-center">
+      
+      <i class="fa fa-bar-chart"></i>
+      &nbsp;
+      New Poll
 
-  <form-field record="poll" field="title" type="text" live="false" required="true"></form-field>
+   </div>
+
+  </div>
+
+</div>
+
+<div class="row">
+  <div class="col-sm-12">
+    
+    <div class="well">
+      <strong>{{ poll.title }} <i class="pull-right">{{ poll.status }}</i></strong>
+    </div>
+    
+  </div>
+</div>
+
+<form name="newPoll" novalidate class="form-horizontal">
 
   <div class="row">
     
     <div class="col-md-12">
-      <label class="control-label"> Phrase Protected? </label>
+      <form-field record="poll" field="title" live="false" required="true" type="text"></form-field>
     </div>
-    
-    <label class="checkbox-inline">
-      <input type="radio" ng-model="poll.password_protected" value="Y" /> Yes
-    </label>
-    <label class="checkbox-inline">
-      <input type="radio" ng-model="poll.password_protected" value="N" ng-checked="true" /> No
-    </label>
 
-    <div class="col-md-12" ng-show="checkPasswordProtected()">
+    <div class="col-md-6">
+
+      <label class="control-label"> Phrase Protected? </label>
       
-      <form-field record="poll" field="password" live="false" required="true" type="text"></form-field>
+      <br />
+
+      <label class="checkbox-inline">
+        <input type="radio" ng-model="poll.password_protected" value="Y" /> Yes
+      </label>
+      <label class="checkbox-inline">
+        <input type="radio" ng-model="poll.password_protected" value="N" ng-checked="true" /> No
+      </label>
+      
+    </div>
+
+    <div class="col-md-6">
+
+       <label class="control-label"> Status </label>
+
+      <br />
+
+      <label class="checkbox-inline">
+        <input type="radio" ng-model="poll.status" value="live" ng-checked="true" /> Live
+      </label>
+      <label class="checkbox-inline">
+        <input type="radio" ng-model="poll.status" value="draft" /> Draft
+      </label>
 
     </div>
 
@@ -27,19 +73,22 @@
 
   <div class="row">
     
-    <label class="checkbox-inline">
-      <input type="radio" ng-model="poll.status" value="live" /> Live
-    </label>
-    <label class="checkbox-inline">
-      <input type="radio" ng-model="poll.status" value="draft" /> Draft
-    </label>
+    <div class="col-md-6">
 
+     <form-field record="poll" field="password" live="false" type="text" disabled="poll.password_protected == 'N' || !poll.password_protected "></form-field>
+
+    </div>
+  
   </div>
 
   <div class="clearfix"></div>
 
-	<div class="col-md-12 form-group">
-		<button class="btn btn-primary" ng-click="save()">Update Poll</button>
+  <hr>
+  
+  <div class="row">
+    <div class="col-md-12">
+      <button class="btn btn-primary" ng-click="save()">Update Poll</button>
+    </div>
   </div>
 
 </form>
