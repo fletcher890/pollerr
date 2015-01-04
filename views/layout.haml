@@ -8,8 +8,8 @@
     %link{:href => "lib/bootstrap/dist/css/bootstrap.min.css", :rel => "stylesheet"}
     %link{:href => "src/css/areo.css", :rel => "stylesheet"}
     %link{:href => "src/css/pollerr.css", :rel => "stylesheet"}
-  %body
-    #wrapper
+  %body{"ng-class" => " { white: PAGE == 'take-survey' } "}
+    #wrapper{"ng-class" => "{ full: sidebarHide == true }" }
       #sidebar-wrapper
         %ul#sidebar.sidebar-nav{"ng-controller" => "NavigationController"}
           %li.sidebar-brand

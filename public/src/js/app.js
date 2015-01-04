@@ -10,10 +10,12 @@ angular.module('PollerrApp', ['ngRoute', 'ngResource', 'ngMessages', 'angular-fl
         controller: 'AuthController'
       })
       .when('/login', {
-        controller: 'AuthController'
+        controller: 'AuthController',
+        templateUrl: 'templates/auth/login.html'
       })
       .when('/register', {
-        controller: 'AuthController'
+        controller: 'AuthController',
+        templateUrl: 'templates/auth/register.html'
       })
       .when('/polls', {
         controller: 'PollsController',

@@ -1,36 +1,23 @@
-.page-header
-  %h1 Authentication
-.row
-  .col-sm-12
-    .col-sm-6
-      %form.form-horizontal{:action => "/login", :method => "POST"}
-        %h2 Log In
-        .row.form-group
-          %label.control-label.col-sm-2{:for => "username"} Username:
-          .col-sm-8
-            %input.form-control{:name => "username", :required => "", :type => "text"}/
-        .row.form-group
-          %label.control-label.col-sm-2{:for => "password"} Password:
-          .col-sm-8
-            %input.form-control{:name => "password", :required => "", :type => "password"}/
-        .row.form-group
-          .col-sm-offset-2.col-sm-10
-            %button.btn.btn-primary Log In
-    .col-sm-6
-      %form.form-horizontal{:action => "/register", :method => "POST"}
-        %h2 Sign Up
-        .row.form-group
-          %label.control-label.col-sm-2{:for => "email"} Email:
-          .col-sm-8
-            %input.form-control{:name => "user[email]", :required => "", :type => "email"}/
-        .row.form-group
-          %label.control-label.col-sm-2{:for => "username"} Username:
-          .col-sm-8
-            %input.form-control{:name => "user[username]", :required => "", :type => "text"}/
-        .row.form-group
-          %label.control-label.col-sm-2{:for => "password"} Password:
-          .col-sm-8
-            %input.form-control{:name => "password", :required => "", :type => "password"}/
-        .row.form-group
-          .col-sm-offset-2.col-sm-10
-            %button.btn.btn-primary Sign Up
+#login-overlay.modal-dialog
+  %img.login-logo{:src => "logo.png"}/
+  .modal-content
+    .modal-header
+      %h4#myModalLabel.modal-title Login / Regsiter
+    .modal-body
+      .row
+        .col-xs-12
+          .well
+            %form#loginForm{:action => "/login/", :method => "POST", :novalidate => "novalidate"}
+              .form-group
+                %label.control-label{:for => "username"} Username / Email Address
+                %input#username.form-control{:name => "username", :placeholder => "example9807 / example@gmail.com", :required => "", :title => "Please enter you username", :type => "text", :value => ""}/
+                %span.help-block
+              .form-group
+                %label.control-label{:for => "password"} Password
+                %input#password.form-control{:name => "password", :placeholder => "********", :required => "", :title => "Please enter your password", :type => "password", :value => ""}/
+                %span.help-block
+              %button.btn.btn-primary.btn-block{:type => "submit"} Login
+            .text-center.or
+              OR
+            %p
+              %a.btn.btn-default.btn-block{:href => "register.php"} Register now!

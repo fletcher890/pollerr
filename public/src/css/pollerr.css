@@ -18,13 +18,25 @@ a {
   transition: all .4s ease 0s;
 }
 
-
+body.white {
+  background-color: #ffffff !important;
+}
 
 #wrapper {
     padding-left: 70px;
     transition: all .4s ease 0s;
     height: 100%
 }
+
+
+#wrapper.full {
+  padding-left: 0px !important;
+}
+
+#wrapper.full #sidebar-wrapper {
+  display: none !important;
+}
+
 
 #sidebar-wrapper {
     margin-left: -75px;

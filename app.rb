@@ -182,9 +182,9 @@ module Pollerr
     helpers UserSession
  
     before do
-      if !logged_in? && request.path_info != '/login' && request.path_info != '/register' && !request.path_info.include?('/take-survey') && !request.path_info.include?('/api')
-        redirect('/login') and return 
-      end
+      # if !logged_in? && request.path_info != '/login' && request.path_info != '/register' && !request.path_info.include?('/take-survey') && !request.path_info.include?('/api')
+      #   redirect('/login') and return 
+      # end
     end
 
     get '/' do

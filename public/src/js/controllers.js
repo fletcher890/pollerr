@@ -17,17 +17,18 @@ angular.module('PollerrApp')
     }
   })
   .controller('AuthController', function($scope, $rootScope, $location, $routeParams) {
+    $rootScope.sidebarHide = true;
     var init = function() {
-      console.log($routeParams);
       if( $routeParams.logout ) {
         $location.url('login');
       }
-      if( $routeParams.login ) {
-        console.log('login')
-      }
     }
-    console.log('12312312')
     init();
+
+    $scope.doRegister = function() {
+      $location.url('register');
+    }
+
   })
   .controller('PollsController', function ($scope, $rootScope, Poll, $location, $route) {
     $rootScope.PAGE = 'polls'
@@ -92,10 +93,6 @@ angular.module('PollerrApp')
       Graph.instances.push(new Graph("#polls_per_month", data, "column"));
       instantiateGraphs();
     });
-
-    // function instantiateGraphs(){
-    //   console.log('12312312')
-    // }
 
     $scope.edit = function() {
       $location.url('polls/' + $scope.poll.id + '/edit');
@@ -226,8 +223,8 @@ angular.module('PollerrApp')
   })
 
   .controller('TakePollController', function($scope, $rootScope, $location, Poll, Question, Reply, Setting, $routeParams, flash) {
-    $rootScope.PAGE = '/take-survey/:username/:id';
-
+    $rootScope.PAGE = 'take-survey';
+    $rootScope.sidebarHide = true;
     Poll.get_live({ id: $routeParams.id }, function(successResult) {
       
       if(typeof successResult.title === 'undefined'){
