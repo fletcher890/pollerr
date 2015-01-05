@@ -16,7 +16,7 @@ angular.module('PollerrApp')
       $location.url(where);
     }
   })
-  .controller('AuthController', function($scope, $rootScope, $location, $routeParams) {
+  .controller('AuthController', function($scope, $rootScope, $location, $routeParams, Auth) {
     $rootScope.sidebarHide = true;
     var init = function() {
       if( $routeParams.logout ) {
@@ -27,6 +27,10 @@ angular.module('PollerrApp')
 
     $scope.doRegister = function() {
       $location.url('register');
+    }
+
+    $scope.doLogin = function(){
+      Auth.login();
     }
 
   })

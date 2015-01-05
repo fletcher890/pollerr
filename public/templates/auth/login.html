@@ -8,7 +8,7 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="well">
-                        <form id="loginForm" method="POST" action="/login/" novalidate="novalidate">
+                        <form name="login" novalidate="novalidate">
                             <div class="form-group">
                                 <label for="username" class="control-label">Username / Email Address</label>
                                 <input type="text" class="form-control" id="username" name="username" value="" required="" title="Please enter you username" placeholder="example9807 / example@gmail.com">
@@ -19,7 +19,7 @@
                                 <input type="password" class="form-control" id="password" name="password" value="" required="" title="Please enter your password" placeholder="********">
                                 <span class="help-block"></span>
                             </div>
-                            <button type="submit" class="btn btn-primary btn-block">Login</button>
+                            <button type="submit" class="btn btn-primary btn-block" ng-click="doLogin()">Login</button>
                         </form>
 
                         <div class="text-center or">
