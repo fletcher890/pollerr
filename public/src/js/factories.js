@@ -37,6 +37,7 @@ angular.module('PollerrApp')
   })
   .factory('Auth', function($resource) {
     return $resource('/api/auth', {}, {
-      'login' : { method: 'POST', url: '/api/login' }
+      'login' : { method: 'POST', url: '/api/login', isArray: false },
+      'register' : { method: 'POST', url: '/api/register', isArray: false }
     });
   });

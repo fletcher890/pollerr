@@ -16,23 +16,72 @@ angular.module('PollerrApp')
       $location.url(where);
     }
   })
-  .controller('AuthController', function($scope, $rootScope, $location, $routeParams, Auth) {
+  .controller('AuthController', function ($scope, $rootScope, $location, $routeParams, $cookies, Auth, flash) {
     $rootScope.sidebarHide = true;
+    $scope.auth = new Auth();
+    
     var init = function() {
-      if( $routeParams.logout ) {
+      if( $location.url() == '/logout' ) {
+        $cookies.loggedIn = false;
         $location.url('login');
+      } else if($location.url() == '/login'){
+        
+      } else if($location.url() == '/register') {
+
       }
     }
-    init();
 
     $scope.doRegister = function() {
-      $location.url('register');
+      if($scope.register.$invalid) {
+        $scope.$broadcast('record:invalid');
+      } else {
+
+        $scope.auth.$register(function(u, getResponseHeaders) {
+
+          if(u.success) {
+            $rootScope.sidebarHide = false;
+            $cookies.loggedIn = true;
+            $location.url('/');
+          } else {
+            flash.success = 'The details that you provided were not able to be registered!';
+          }
+
+        }, function(u, getResponseHeaders) {
+          // Error if
+          flash.success = 'The details that you provided were not able to be registered!';  
+        });
+
+      }
+    }
+
+    $scope.redirect = function(where) {
+      $location.url(where);
     }
 
     $scope.doLogin = function(){
-      Auth.login();
+
+      if($scope.login.$invalid) {
+
+        $scope.$broadcast('record:invalid');
+      } else {
+
+        $scope.auth.$login(function(u, getResponseHeaders) {
+          // Success if
+          if(u.success) {
+            $rootScope.sidebarHide = false;
+            $cookies.loggedIn = true;
+            $location.url('/');
+          } else {
+            flash.success = 'Your login details were incorrect!';  
+          }
+        }, function(u, getResponseHeaders) {
+          // Error if
+          flash.success = 'Your login details were incorrect!';  
+        });
+      }
     }
 
+    init();
   })
   .controller('PollsController', function ($scope, $rootScope, Poll, $location, $route) {
     $rootScope.PAGE = 'polls'
@@ -94,8 +143,10 @@ angular.module('PollerrApp')
     $scope.activeTab = $routeParams.tab || 'questions'
     $scope.poll = Poll.get({ id: $routeParams.id });
     $scope.graphData = Poll.get_json({ id: $routeParams.id }, function(data) {
-      Graph.instances.push(new Graph("#polls_per_month", data, "column"));
-      instantiateGraphs();
+      if(data.data.length > 0){
+        Graph.instances.push(new Graph("#polls_per_month", data, "column"));
+        instantiateGraphs();
+      }
     });
 
     $scope.edit = function() {

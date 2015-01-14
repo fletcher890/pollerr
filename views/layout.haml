@@ -6,12 +6,12 @@
     %meta{content: "width=device-width, user-scalable=no", name: "viewport"}
     %link{:href => "//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css", :rel => "stylesheet"}
     %link{:href => "lib/bootstrap/dist/css/bootstrap.min.css", :rel => "stylesheet"}
-    %link{:href => "src/css/areo.css", :rel => "stylesheet"}
-    %link{:href => "src/css/pollerr.css", :rel => "stylesheet"}
+    %link{:href => "src/css/areo.css", :rel => "stylesheet", "ng-if" => "  PAGE != 'take-survey' "}
+    %link{:href => "src/css/pollerr.css", :rel => "stylesheet", "ng-if" => " PAGE != 'take-survey' "}
   %body{"ng-class" => " { white: PAGE == 'take-survey' } "}
     #wrapper{"ng-class" => "{ full: sidebarHide == true }" }
       #sidebar-wrapper
-        %ul#sidebar.sidebar-nav{"ng-controller" => "NavigationController"}
+        %ul#sidebar.sidebar-nav{"ng-controller" => "NavigationController", "ng-class" => "{ hidden: PAGE == 'take-survey' }"}
           %li.sidebar-brand
             %a.text-center{"data-placement" => "right", "data-toggle" => "tooltip", :href => "./", :title => "Dashboard", "ng-click" => "click('dashboard')", "ng-class" => "{ active: PAGE == 'dashboard' }"}
               %i.fa.fa-dashboard
@@ -24,7 +24,7 @@
           %li.sidebar-brand
             %a.text-center{"data-placement" => "right", "data-toggle" => "tooltip", :href => "javascript:;", :title => "Settings", "ng-click" => "click('settings')", "ng-class" => "{ active: PAGE == 'settings' }"}
               %i.fa.fa-cog
-        %ul.sidebar-nav.bottom{"ng-controller" => "NavigationController"}
+        %ul.sidebar-nav.bottom{"ng-controller" => "NavigationController", "ng-class" => "{ hidden: PAGE == 'take-survey' }" }
           %li.sidebar-brand
             %a.text-center{"data-placement" => "right", "data-toggle" => "tooltip", :href => "javascript:;", :title => "Logout", "ng-click" => "click('logout')"}
               %i.fa.fa-sign-out
@@ -44,6 +44,7 @@
     %script{:src => "lib/angular-resource/angular-resource.min.js"}
     %script{:src => "lib/angular-messages/angular-messages.min.js"}
     %script{:src => "lib/angular-flash/dist/angular-flash.min.js"}
+    %script{:src => "lib/angular-cookies/angular-cookies.min.js"}
     %script{:src => "lib/angular-ui-utils/ui-utils.min.js"}
     %script{:src => "lib/angular-bootstrap/ui-bootstrap.min.js"}
     %script{:src => "src/js/app.js"}

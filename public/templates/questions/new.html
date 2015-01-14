@@ -64,16 +64,20 @@
       </label>
      
       <div ng-hide="checkKind()">
-        
-        <div ng-repeat="item in question.possible_answer_attributes">
-          <div class="row form-group">
-            <div class="col-md-12">
-              <nested-field record="question.possible_answer_attributes[$index]" question="question" field="title" live="false" required="true" type="text" index="{{ $index }}"></nested-field>
+
+        <div class="multipleOptionsBox">
+          
+          <div ng-repeat="item in question.possible_answer_attributes">
+            <div class="row form-group">
+              <div class="col-md-12">
+                <nested-field record="question.possible_answer_attributes[$index]" question="question" field="title" live="false" required="true" type="text" index="{{ $index }}"></nested-field>
+              </div>
             </div>
           </div>
-        </div>
 
-        <button ng-click="addInput()" class="btn btn-default btn-block">New Item</button>
+          <button ng-click="addInput()" class="btn btn-default btn-block">New Item</button>
+
+        </div>
 
       </div> 
 

@@ -333,43 +333,50 @@ module Pollerr
     end
 
     post '/api/login' do 
-      user = User.first(:username => params[:username], :encrypted_password => Digest::SHA1.hexdigest(params[:password]))
-      if user.nil?
-        flash[:error] = 'Invalid log in credentails'
-        redirect('/login')
-      else
-        flash[:notice] = "Successfully logged in"
+      
+      ng_params = JSON.parse(request.body.read)
+      user = User.first(:username => ng_params['username'], :encrypted_password => Digest::SHA1.hexdigest(ng_params['password']))
+      access = {}
+
+      if !user.nil?
         session[:email] = user.email
         session[:user_id] = user.id
-        redirect('/')
+        access['success'] = true
+      else
+        access['success'] = false
       end
+
+      content_type :json
+      return access.to_json
+
 
     end
 
     post '/api/register' do 
 
-      if !User.first(:email => params[:user][:email]).nil?
-        flash[:error] = "Somebody is already registered with this email address"
-        redirect('/login');
+      ng_params = JSON.parse(request.body.read)
+      access = {}
+      password = ng_params["password"]
+      ng_params.delete('password')
+      ng_params.delete('success') if ng_params.has_key?('success')
+
+      if !User.first(:email => ng_params['email']).nil?
+        access['success'] = false
       else
-        t = User.create(params[:user])
-        t.encrypted_password = Digest::SHA1.hexdigest(params[:password])
+        t = User.create(ng_params)
+        t.encrypted_password = Digest::SHA1.hexdigest(password)
         t.save()
 
         settings = Setting.create(:user_id => t.id).save()
 
         session[:email] = t.email
         session[:user_id] = t.id
-        flash[:notice] = "You have been successfully registered and logged in"
-        redirect('/')
+        access['success'] = true
       end
 
-    end
+      content_type :json
+      return access.to_json
 
-    get '/api/logout' do 
-      session[:email] = nil
-      flash[:notice] = "Successfully logged out. Don't be a stranger, come back again soon!"
-      redirect('/login')
     end
 
     get '/*' do

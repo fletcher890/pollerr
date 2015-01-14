@@ -1,13 +1,18 @@
-angular.module('PollerrApp', ['ngRoute', 'ngResource', 'ngMessages', 'angular-flash.service', 'angular-flash.flash-alert-directive', 'ui.utils', 'ui.bootstrap'])
-  .config(function($routeProvider, $locationProvider, $httpProvider, flashProvider) {
+var app = angular.module('PollerrApp', ['ngRoute', 'ngResource', 'ngMessages', 'ngCookies', 'angular-flash.service', 'angular-flash.flash-alert-directive', 'ui.utils', 'ui.bootstrap']);
+
+  app.value('loggedIn', false);
+
+  app.config(function($routeProvider, $locationProvider, $httpProvider, flashProvider) {
     
     $routeProvider
       .when('/', {
         controller: 'DashboardController',
-        templateUrl: 'templates/dashboard/index.html'
+        templateUrl: 'templates/dashboard/index.html',
+        auth: true
       })
       .when('/logout', {
-        controller: 'AuthController'
+        controller: 'AuthController',
+        template: ''
       })
       .when('/login', {
         controller: 'AuthController',
@@ -19,35 +24,43 @@ angular.module('PollerrApp', ['ngRoute', 'ngResource', 'ngMessages', 'angular-fl
       })
       .when('/polls', {
         controller: 'PollsController',
-        templateUrl: 'templates/polls/index.html'
+        templateUrl: 'templates/polls/index.html',
+        auth: true
       })
       .when('/polls/new', {
         controller: 'NewPollController', 
-        templateUrl: 'templates/polls/new.html'
+        templateUrl: 'templates/polls/new.html',
+        auth: true
       })
       .when('/polls/:id/edit', {
         controller: 'EditPollController',
-        templateUrl: 'templates/polls/edit.html'
+        templateUrl: 'templates/polls/edit.html',
+        auth: true
       })
       .when('/polls/:id/:tab?', {
         controller: 'SinglePollController',
-        templateUrl: 'templates/polls/show.html'
+        templateUrl: 'templates/polls/show.html',
+        auth: true
       })
       .when('/polls/:id/questions/new', {
         controller: 'NewQuestionController',
-        templateUrl: 'templates/questions/new.html'
+        templateUrl: 'templates/questions/new.html',
+        auth: true
       })
       .when('/polls/:id/questions/:qid/edit', {
         controller: 'EditQuestionController',
-        templateUrl: 'templates/questions/edit.html'
+        templateUrl: 'templates/questions/edit.html',
+        auth: true
       })
       .when('/take-survey/:username/:id', {
         controller: 'TakePollController',
-        templateUrl: 'templates/poll-fe/index.html'
+        templateUrl: 'templates/poll-fe/index.html',
+        auth: true
       })
       .when('/settings', {
         controller: 'SettingsController',
-        templateUrl: 'templates/settings/index.html'
+        templateUrl: 'templates/settings/index.html',
+        auth: true
       })
 
     $httpProvider.defaults.useXDomain = true;
@@ -56,4 +69,16 @@ angular.module('PollerrApp', ['ngRoute', 'ngResource', 'ngMessages', 'angular-fl
 
     flashProvider.errorClassnames.push('alert-danger');
 
+  });
+
+  app.run(function($location, $log, $rootScope, $route, $cookies, loggedIn) {
+    $rootScope.$watch(function() { 
+      return $location.path(); 
+    },
+    function(a){  
+      var nextPath = $location.path(), nextRoute = $route.routes[nextPath];
+      if (nextRoute && nextRoute.auth && String($cookies.loggedIn) == 'false') {
+        $location.path("/login");
+      }
+    });
   });

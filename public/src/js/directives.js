@@ -58,6 +58,7 @@ angular.module('PollerrApp')
         question: '=',
         field: '@',
         live: '@',
+        type: '@',
         required: '@',
         index: '@'
       },
