@@ -1,9 +1,14 @@
 <div class="row">
+  
+  <div class="col-md-12">
+    <ng-include src="'templates/partials/logo-small.html'"></ng-include>
+  </div>
+
   <div class="col-md-6">
     <h2> {{ poll.title  }} </h2>
   </div>
   <div class="col-md-6">
-    <div class="btn-group pull-right" class="margin-top-20 btnGroup">
+    <div class="btn-group pull-right margin-top-20 btnGroup" >
       <button class='btn btn-sm btn-default' ng-click='add_question()'> Add A Question </button>
       <button ng-click="edit()" class="btn btn-sm btn-primary"> Edit Poll</button>
       <button class='btn btn-sm btn-danger' ng-click='delete()'> Delete Poll </button>
@@ -95,6 +100,8 @@
 
           </div>
 
+          <br />
+
         </div>
         <div role="tabpanel" class="tab-pane" id="replies" ng-class="{ 'active': activeTab == 'replies' }">
 
@@ -144,6 +151,7 @@
             </div>
 
           </div>
+           <br />
         </div>
         <div role="tabpanel" class="tab-pane" id="statistics" ng-class="{ 'active': activeTab == 'statistics' }">
 
@@ -161,6 +169,8 @@
 
 
           </div>
+
+           <br />
 
         </div>
 

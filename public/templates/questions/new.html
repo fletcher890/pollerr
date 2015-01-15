@@ -1,10 +1,15 @@
 <div class="row block-of-three">
+
+  <div class="col-md-12">
+    <ng-include src="'templates/partials/logo-small.html'"></ng-include>
+  </div>
     
   <div class="col-md-12">
 
     <ol class="breadcrumb" ng-controller="NavigationController">
         <li><a href="javascript:;" ng-click="click('dashboard')">Home</a></li>
         <li><a href="javascript:;" ng-click="click('polls')">Polls</a></li>
+        <li><a href="javascript:;" ng-click="click('polls/' + poll.id)">Poll</a></li>
         <li>New Question</li>
     </ol>
       

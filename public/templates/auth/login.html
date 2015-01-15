@@ -1,5 +1,7 @@
 <div id="login-overlay" class="modal-dialog ">
-    <img src="public/src/images/pollerr-logo.svg" class="login-logo">
+    <div class="logoWrapper">
+        <object data="/src/images/pollerr-logo.svg" type="image/svg+xml"></object><small>Pollerr</small>
+    </div>
     <div class="modal-content">
         <div class="modal-header">
             <h4 class="modal-title" id="myModalLabel">Login / Regsiter</h4>
@@ -8,6 +10,7 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="well">
+
                         <form name="login" novalidate="novalidate">
                             <div class="form-group">
                                 <label for="username" class="control-label">Username / Email Address</label>

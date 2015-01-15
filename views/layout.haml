@@ -32,7 +32,6 @@
         .page-content.inset
           .row
             .col-md-offset-1.col-md-10
-              =get_notifications
               -partial(:'partials/_flash')
               =yield
     %script{:src => "http://www.google.com/jsapi"}
@@ -53,3 +52,4 @@
     %script{:src => "src/js/directives.js"}
     %script{:src => "src/js/ng-really.js"}
     %script{:src => "src/js/graph.js"}
+    %script{:src => "src/js/site.js"}

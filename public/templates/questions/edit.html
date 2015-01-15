@@ -1,12 +1,50 @@
-<h1>Edit question "{{ question.title }}" from <a href="javascript:;" ng-click="poll_location(poll.id)">{{ poll.title }}</a></h1>
+<div class="row block-of-three">
+
+  <div class="col-md-12">
+    <ng-include src="'templates/partials/logo-small.html'"></ng-include>
+  </div>
+    
+  <div class="col-md-12">
+
+    <ol class="breadcrumb" ng-controller="NavigationController">
+        <li><a href="javascript:;" ng-click="click('dashboard')">Home</a></li>
+        <li><a href="javascript:;" ng-click="click('polls')">Polls</a></li>
+        <li><a href="javascript:;" ng-click="click('polls/' + poll.id)">Poll</a></li>
+        <li>Edit Question</li>
+    </ol>
+      
+    <div class="well text-center">
+      
+      <i class="fa fa-bar-chart"></i>
+      &nbsp;
+      Edit Question
+
+   </div>
+
+  </div>
+
+</div>
+
+<div class="row">
+  <div class="col-sm-12">
+    
+    <div class="well">
+      <strong>Edit question for <a href="javascript:;" ng-click="poll_location(poll.id)">{{ poll.title }}</a></strong>
+    </div>
+    
+  </div>
+</div>
+
 
 <form class="form-horizontal" name="newQuestion" novalidate>
-
-  <form-field record="question" field="title" type="text" live="false" required="true"></form-field>
 
   <div class="row">
 
     <div class="col-md-12">
+      <form-field record="question" field="title" type="text" live="false" required="true"></form-field>
+    </div>
+
+    <div class="col-md-6">
       
       <label class="control-label"> Required <span ng-if="required">*</span></label><br />
       
@@ -19,11 +57,7 @@
 
     </div>
 
-  </div>
-
- <div class="row">
-
-    <div class="col-md-12">
+    <div class="col-md-6">
       
       <label class="control-label"> Question type <span ng-if="required">*</span></label><br />
     
@@ -34,33 +68,34 @@
         <input type="radio" ng-model="question.kind" value="multiple" /> Multiple Choice
       </label>
 
+      <div ng-hide="checkKind()">
+
+        <div class="multipleOptionsBox">
+          
+          <div ng-repeat="item in question.possible_answer">
+            <div class="row form-group">
+              <div class="col-md-12">
+                <nested-field record="question.possible_answer[$index]" question="question" field="title" live="false" required="true" type="text" index="{{ $index }}"></nested-field>
+              </div>
+            </div>
+          </div>
+
+          <button ng-click="addInput()" class="btn btn-default btn-block">New Item</button>
+
+        </div>
+
+      </div> 
+
     </div>
 
   </div>
 
   <br />
 
-  <div ng-hide="checkKind()">
 
-    <div class="multipleOptionsBox">
-      
-      <div ng-repeat="item in question.possible_answer">
-        <div class="row form-group">
-          <div class="col-md-12">
-            <nested-field record="question.possible_answer[$index]" question="question" field="title" live="false" required="true" type="text" index="{{ $index }}"></nested-field>
-          </div>
-        </div>
-      </div>
+  <hr>
 
-      <button ng-click="addInput()" class="btn btn-default btn-block">New Item</button>
-    
-    </div>
-
-  </div> 
-
-  <div class="clearfix"></div>
-
-  <div class="col-md-12 form-group">
+  <div class="col-md-12">
     <button class="btn btn-primary" ng-click="save()">Update Question</button>
   </div>
 

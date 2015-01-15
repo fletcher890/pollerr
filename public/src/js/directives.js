@@ -182,5 +182,37 @@ angular.module('PollerrApp')
       },
 
     }
+  })
+
+  .directive('usernameUnique', function($resource, $timeout) {
+    return {
+      restrict: 'A',
+      require: 'ngModel',
+      link: function($scope, element, attrs, ngModel) {
+        var stop_timeout;
+        return $scope.$watch(function(){
+          return ngModel.$modelValue;
+        }, function(name) {
+          $timeout.cancel(stop_timeout);
+          if (name === '') {
+            ngModel.$setValidity('unique', true);
+          } 
+        
+          var Model = $resource("/api/user/unique");
+
+          if(typeof name != 'undefined'){
+            stop_timeout = $timeout(function() {
+              Model.query({
+                name: name,
+              }, function(models) {
+                console.log(models.length)
+                return ngModel.$setValidity('unique', models.length === 0);
+              });
+            }, 200);
+          }
+
+        });
+      }
+    }
   });
 

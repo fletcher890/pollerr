@@ -3,7 +3,7 @@ def partial(template, *args)
   options.merge!(:layout => false)
   if collection = options.delete(:collection) then
       haml_concat(collection.inject([]) do |buffer, member|
-        buffer << haml('partials/_' + template, options.merge(
+        buffer << haml(template, options.merge(
                                 :layout => false,
                                 :locals => {template.to_sym => member}
                               )

@@ -28,7 +28,7 @@ module Pollerr
 
     ## Database authenticatable
     property :id,                 Serial
-    property :username,           String
+    property :username,           String, :unique => true
     property :admin,              String, :default => "N"
     property :email,              String, :default => ""
     property :encrypted_password, String, :default => ""
@@ -152,41 +152,6 @@ module Pollerr
       use Rack::Flash
     end
 
-    module UserSession
-      
-      def logged_in?
-       not session[:email].nil?
-      end
-      
-      def logout!
-        session[:email] = nil
-      end
-
-      def get_notifications
-      
-        html = ''
-
-        if flash[:error]
-          html += "<div class='alert alert-danger'><button type='button' class='close' data-dismiss='alert'>x</button><strong>Error!</strong> #{flash[:error]}</div>"
-        end
-
-        if flash[:notice]
-          html += "<div class='alert alert-success'><button type='button' class='close' data-dismiss='alert'>x</button><strong>Success!</strong> #{flash[:notice]}</div>"
-        end
-
-        return (html.respond_to?(:html_safe) && html.html_safe) || html
-      end
-
-    end
-
-    helpers UserSession
- 
-    before do
-      # if !logged_in? && request.path_info != '/login' && request.path_info != '/register' && !request.path_info.include?('/take-survey') && !request.path_info.include?('/api')
-      #   redirect('/login') and return 
-      # end
-    end
-
     get '/' do
       haml :index
     end
@@ -194,51 +159,70 @@ module Pollerr
     # Start of polls REST
 
     get '/api/polls' do 
+
       content_type :json
       Poll.all(:user_id => session[:user_id]).to_json
+
     end
 
     post "/api/polls"  do 
+      
       ng_params = JSON.parse(request.body.read)
-      poll = Poll.first(ng_params)
-      if poll.nil?
+
+      if Poll.first(ng_params).nil?
+        
         poll = Poll.create(ng_params)
         poll[:user_id] = session[:user_id].to_i
         poll.save()
+
         content_type :json
         return poll.to_json
+
       end
 
     end
 
     put '/api/polls/:id' do 
+
       poll = Poll.get(params[:id].to_i)
       poll.attributes = JSON.parse(request.body.read)
       poll.save()
+
       content_type :json
       return poll.to_json
+
     end
 
     get "/api/polls/:id" do 
+
       poll = Poll.get(params[:id].to_i)
+
       content_type :json
       return poll.to_json(relationships: { reply: { methods: [ :desc ] }, question: { methods: [ :desc ] } })
+
     end
 
     get "/api/live-polls/:id" do 
+
       poll = Poll.first(:id => params[:id].to_i, :status => 'live')
+
       content_type :json
       return poll.to_json
+
     end
 
     delete '/api/polls/:id' do 
+
       Poll.get(params[:id].to_i).destroy
       return {}.to_json
+
     end
 
     get '/api/poll-json/:id' do 
+
       poll = Poll.get(params[:id].to_i)
       return PollSerializer.count_per_month(poll).to_json
+
     end
 
     # End of polls
@@ -246,66 +230,87 @@ module Pollerr
     # Start of Questions REST
 
     get "/api/questions" do 
+
       content_type :json
       return Question.all.to_json
+
     end
 
     post "/api/questions" do 
-      ng_params = JSON.parse(request.body.read)
-      question = Question.create(ng_params)
+
+      question = Question.create(JSON.parse(request.body.read))
       question.save()
+
       content_type :json
       return question.to_json
+
     end
 
     get "/api/questions/:id" do 
+
       question = Question.get(params[:id].to_i)
+
       content_type :json
       return question.to_json(relationships: { possible_answer: { methods: [ :title ] } })
+
     end
 
     get "/api/questions_by_poll/:id" do 
+
       content_type :json
       return Question.all(:poll_id => params[:id].to_i).to_json(relationships: { possible_answer: { methods: [ :title ] } })
+
     end
 
     put '/api/questions/:id' do 
+
       question = Question.get(params[:id].to_i)
       PossibleAnswer.all(:question_id => params[:id].to_i).destroy
+
       question.attributes = JSON.parse(request.body.read)
       question.save()
+
       content_type :json
       return question.to_json
+
     end
 
-    delete "/api/questions/:id" do 
+    delete "/api/questions/:id" do
+
       Question.get(params[:id].to_i).destroy
       return {}.to_json
+
     end
 
     # End of questions REST
 
     post "/api/reply" do 
-      ng_params = JSON.parse(request.body.read)
-      reply = Reply.create(ng_params)
+     
+      reply = Reply.create(JSON.parse(request.body.read))
       reply.save()
       content_type :json
       return reply.to_json
+    
     end
 
     get "/api/reply/:id" do 
+
       reply = Reply.get(params[:id].to_i)
       content_type :json
       return reply.to_json(relationships: { answer: { methods: [ :id ], relationships: { question: { methods: [:id] } } } })
+    
     end
 
     get "/api/user" do 
+
       user = User.first(:id => session[:user_id].to_i)
       content_type :json
       return user.to_json(relationships: { setting: { methods: [:id] } } )
+
     end
 
     put "/api/user/:id" do 
+      
       user = User.get(params[:id].to_i)
      
       ng_params = JSON.parse(request.body.read)
@@ -320,12 +325,22 @@ module Pollerr
 
       content_type :json
       return user.to_json
+
+    end
+
+    get "/api/user/unique" do 
+      user = User.all(:username => params[:name])
+      content_type :json
+      return user.to_json
     end
 
     get '/api/settings-by-user/:id' do 
+      
       setting = Setting.first(:user_id => params[:id].to_i)
+
       content_type :json
       return setting.to_json
+    
     end
 
     get '/api/login' do 
@@ -361,7 +376,9 @@ module Pollerr
       ng_params.delete('success') if ng_params.has_key?('success')
 
       if !User.first(:email => ng_params['email']).nil?
+
         access['success'] = false
+      
       else
         t = User.create(ng_params)
         t.encrypted_password = Digest::SHA1.hexdigest(password)
