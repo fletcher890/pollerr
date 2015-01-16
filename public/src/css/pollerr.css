@@ -413,8 +413,32 @@ span.poll-title {
   margin-top: 20px; }
 
 .tab-content .table {
-  width: 100%;
+  width: 98%;
   margin: 20px auto 20px auto; }
 
 #polls_per_month > div {
   margin: 0 auto; }
+
+div[ng-view].ng-enter {
+  transition: all 0.5s linear;
+  opacity: 0; }
+
+div[ng-view].ng-enter-active {
+  opacity: 1; }
+
+.reveal-animation.ng-enter {
+  -webkit-transition: 3s linear all;
+  /* Safari/Chrome */
+  transition: 3s linear all;
+  /* All other modern browsers and IE10+ */
+  /* The animation preparation code */
+  opacity: 0; }
+
+/*
+ Keep in mind that you want to combine both CSS
+ classes together to avoid any CSS-specificity
+ conflicts
+*/
+.reveal-animation.ng-enter.ng-enter-active {
+  /* The animation code itself */
+  opacity: 1; }

@@ -1,6 +1,6 @@
 var app;
 
-app = angular.module("PollerrApp", ["ngRoute", "ngResource", "ngMessages", "ngCookies", "angular-flash.service", "angular-flash.flash-alert-directive", "ui.utils", "ui.bootstrap"]);
+app = angular.module("PollerrApp", ["ngRoute", "ngResource", "ngMessages", "ngCookies", "ngAnimate", "angular-flash.service", "angular-flash.flash-alert-directive", "ui.utils", "ui.bootstrap"]);
 
 app.value("loggedIn", false);
 
