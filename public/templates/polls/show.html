@@ -18,6 +18,7 @@
 
   <div class="col-md-12">
     <small class="pull-left">Created On: {{ poll.created_at | date: 'dd/MM/yyyy' }}</small>
+    <a href="/take-poll/{{poll.id}}"> {{ $location.host() }}</a>
   </div>
 </div>
 
