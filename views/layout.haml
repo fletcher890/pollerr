@@ -4,8 +4,8 @@
     %title Pollerr
     %base{href:"/"}
     %meta{content: "width=device-width, user-scalable=no", name: "viewport"}
-    %link{:href => "lib/fontawesome/css/font-awesome.min.css", :rel => "stylesheet"}
-    %link{:href => "lib/bootstrap/dist/css/bootstrap.min.css", :rel => "stylesheet"}
+    %link{:href => "https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css", :rel => "stylesheet"}
+    %link{:href => "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css", :rel => "stylesheet"}
     %link{:href => "src/css/pollerr.css", :rel => "stylesheet", "ng-if" => " PAGE != 'take-survey' "}
   %body{"ng-class" => " { white: PAGE == 'take-survey' } "}
     #wrapper{"ng-class" => "{ full: sidebarHide == true }" }
@@ -34,9 +34,9 @@
             .col-md-offset-1.col-md-10
               -partial(:'partials/_flash')
               =yield
+    %script{:src => "https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"}
+    %script{:src => "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"}
     %script{:src => "http://www.google.com/jsapi"}
-    %script{:src => "lib/jquery/dist/jquery.min.js"}
-    %script{:src => "lib/bootstrap/dist/js/bootstrap.min.js"}
     %script{:src => "lib/angular/angular.min.js"}
     %script{:src => "lib/angular-route/angular-route.min.js"}
     %script{:src => "lib/angular-resource/angular-resource.min.js"}
