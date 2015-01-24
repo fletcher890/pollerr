@@ -1,5 +1,7 @@
 require 'bundler/setup'
 Bundler.require(:default)
+
+use Rack::Static, :urls => ['/src', '/template', '/lib'], :root => 'public'
  
 require File.dirname(__FILE__) + "/app.rb"
 require File.dirname(__FILE__) + "/lib/partials.rb"
