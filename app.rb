@@ -168,6 +168,7 @@ module Pollerr
     post "/api/polls"  do 
       
       ng_params = JSON.parse(request.body.read)
+      abort ng_params.inspect
 
       if Poll.first(ng_params).nil?
         

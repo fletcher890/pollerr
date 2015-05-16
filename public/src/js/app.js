@@ -54,17 +54,18 @@ app.config(function($routeProvider, $locationProvider, $httpProvider, flashProvi
   $httpProvider.defaults.useXDomain = true;
   delete $httpProvider.defaults.headers.common["X-Requested-With"];
   $locationProvider.html5Mode(true);
-  flashProvider.errorClassnames.push("alert-danger");
+  flashProvider.errorClassnames.push('alert-danger');
 });
 
 app.run(function($location, $log, $rootScope, $route, $cookies, loggedIn) {
+  console.log($cookies.loggedIn)
   $rootScope.$watch((function() {
     return $location.path();
   }), function(a) {
     var nextPath, nextRoute;
     nextPath = $location.path();
     nextRoute = $route.routes[nextPath];
-    if (nextRoute && nextRoute.auth && String($cookies.loggedIn) === "false") {
+    if (nextRoute && nextRoute.auth && (String($cookies.loggedIn) === "false" || typeof $cookies.loggedIn === 'undefined')) {
       $location.path("/login");
     }
   });

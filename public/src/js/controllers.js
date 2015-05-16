@@ -24,11 +24,7 @@ angular.module('PollerrApp')
       if( $location.url() == '/logout' ) {
         $cookies.loggedIn = false;
         $location.url('login');
-      } else if($location.url() == '/login'){
-        
-      } else if($location.url() == '/register') {
-
-      }
+      } 
     }
 
     $scope.doRegister = function() {
@@ -118,7 +114,8 @@ angular.module('PollerrApp')
   .controller('NewPollController', function ($scope, $rootScope, Poll, $location) {
     $rootScope.PAGE = 'polls';
     $scope.poll = new Poll({
-      title: ''
+      title: '',
+      status: 'live'
     });
 
     $scope.save = function() {
@@ -126,7 +123,7 @@ angular.module('PollerrApp')
       if($scope.newPoll.$invalid) {
         $scope.$broadcast('record:invalid');
       } else {
-        $scope.poll.$save();
+          $scope.poll.$save();
         $location.url('/polls');
       }
 
@@ -138,10 +135,14 @@ angular.module('PollerrApp')
 
   })
 
-  .controller('SinglePollController', function ($scope, $rootScope, $location, Poll, Question, Reply, $routeParams, $route) {
+  .controller('SinglePollController', function ($scope, $rootScope, $location, Poll, Question, Reply, User, $routeParams, $route) {
     $rootScope.PAGE = 'polls';
     $scope.activeTab = $routeParams.tab || 'questions'
     $scope.poll = Poll.get({ id: $routeParams.id });
+    $scope.u = User.get({ id: $scope.poll.user_id});
+
+    console.log($route)
+
     $scope.graphData = Poll.get_json({ id: $routeParams.id }, function(data) {
       if(data.data.length > 0){
         Graph.instances.push(new Graph("#polls_per_month", data, "column"));
@@ -162,7 +163,7 @@ angular.module('PollerrApp')
       $location.url('/polls');
     }
 
-    $scope.show_question = function(id, qid){
+    $scope.show_question = function (id, qid){
       $location.url('/polls/' + id + '/questions/' + qid + '/edit');
     }
 
@@ -277,7 +278,7 @@ angular.module('PollerrApp')
 
   })
 
-  .controller('TakePollController', function($scope, $rootScope, $location, Poll, Question, Reply, Setting, $routeParams, flash) {
+  .controller('TakePollController', function ($scope, $rootScope, $location, Poll, Question, Reply, Setting, $routeParams, flash) {
     $rootScope.PAGE = 'take-survey';
     $rootScope.sidebarHide = true;
     Poll.get_live({ id: $routeParams.id }, function(successResult) {
@@ -318,6 +319,7 @@ angular.module('PollerrApp')
       } else {
         $scope.user_record.$update();
         flash.success = 'You have successfully updated your settings';
+        console.log(flash.success)
         $location.url('/settings/');
       }
     }

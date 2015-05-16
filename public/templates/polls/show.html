@@ -12,13 +12,12 @@
       <button class='btn btn-sm btn-default' ng-click='add_question()'> Add A Question </button>
       <button ng-click="edit()" class="btn btn-sm btn-primary"> Edit Poll</button>
       <button class='btn btn-sm btn-danger' ng-click='delete()'> Delete Poll </button>
+      <a class='btn btn-sm btn-success' href='/take-survey/{{u.username}}/{{poll.id}}'> View Poll </a>
     </div>
 
   </div>
-
   <div class="col-md-12">
     <small class="pull-left">Created On: {{ poll.created_at | date: 'dd/MM/yyyy' }}</small>
-    <a href="/take-poll/{{poll.id}}"> {{ $location.host() }}</a>
   </div>
 </div>
 

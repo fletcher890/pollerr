@@ -1,15 +1,15 @@
-/ Subscribe to success flash messages.
-.fade.alert-dismissible{"active-class" => "in alert", "flash-alert" => "success"}
-  %button.close{"data-dismiss" => "alert", :type => "button"}
-    %span{"aria-hidden" => "true"} ×
-    %span.sr-only Close
-  %strong.alert-heading Success!
-  %span.alert-message {{flash.message}}
+%div.div.row
+  %div.col-sm-12
+    .fade{"active-class" => "in alert", "flash-alert" => "success"}
+      %button.close{"data-dismiss" => "alert", :type => "button"}
+        %span{"aria-hidden" => "true"} ×
+        %span.sr-only Close
+      %strong.alert-heading Success!
+      %span.alert-message {{flash.message}}
 
-/ Subscribe to Error flash messages.
-.fade.alert-dismissible{"active-class" => "in alert", "flash-alert" => "error"}
-  %button.close{"data-dismiss" => "alert", :type => "button"}
-    %span{"aria-hidden" => "true"} ×
-    %span.sr-only Close
-  %strong.alert-heading Error!
-  %span.alert-message {{flash.message}}
+    .fade{"active-class" => "in alert", "flash-alert" => "error"}
+      %button.close{"data-dismiss" => "alert", :type => "button"}
+        %span{"aria-hidden" => "true"} ×
+        %span.sr-only Close
+      %strong.alert-heading Error!
+      %span.alert-message {{flash.message}}

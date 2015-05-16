@@ -9,7 +9,7 @@
     <ol class="breadcrumb" ng-controller="NavigationController">
         <li><a href="javascript:;" ng-click="click('dashboard')">Home</a></li>
         <li><a href="javascript:;" ng-click="click('polls')">Polls</a></li>
-        <li><a href="javascript:;" ng-click="click('polls/' + poll.id)">Poll {{ poll.id }}</a></li>
+        <li><a href="javascript:;" ng-click="click('polls/' + poll.id)">{{ poll.title }}</a></li>
         <li>Edit Poll</li>
     </ol>
       
